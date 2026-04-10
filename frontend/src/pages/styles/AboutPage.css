@@ -1,0 +1,620 @@
+/* ================= PAGE ================= */
+
+.about-page {
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+}
+
+/* ================= TITLE ================= */
+
+.about-title {
+    margin-bottom: 40px;
+}
+
+.about-title h1 {
+    font-size: 44px;
+    font-weight: 700;
+}
+
+.about-title p {
+    font-size: 16px;
+    color: var(--text-muted);
+    margin-top: 12px;
+}
+
+.about-subtitle-divider {
+    width: 60px;
+    height: 3px;
+    background: var(--primary);
+    margin-top: 10px;
+    border-radius: 3px;
+}
+
+/* ================= SECTION HEADERS ================= */
+
+.about-page section {
+    margin-bottom: 60px;
+}
+
+.about-page h2 {
+    font-size: 42px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    color: var(--text);
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.about-page h2::after {
+    content: "";
+    display: block;
+    width: 50px;
+    height: 3px;
+    background: var(--primary);
+    margin-top: 12px;
+    border-radius: 3px;
+}
+
+/* ================= WORKS GRID ================= */
+
+.works-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 24px;
+    margin-top: 20px;
+    margin-bottom: 70px;
+}
+
+.work-card {
+    position: relative;
+    border-radius: 18px;
+    overflow: hidden;
+    border: 1px solid var(--border-soft);
+    background: rgba(255, 255, 255, 0.04);
+    transition: all 0.3s ease;
+    text-decoration: none;
+    color: inherit;
+}
+
+.work-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+.work-card img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+}
+
+.work-content {
+    padding: 18px;
+}
+
+.work-content h4 {
+    margin-bottom: 8px;
+    font-size: 18px;
+    color: var(--text);
+}
+
+.work-content p {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+    line-height: 1.5;
+}
+
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.tags span {
+    font-size: 12px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(var(--primary-rgb), 0.15);
+    color: var(--primary);
+    border: 1px solid rgba(var(--primary-rgb), 0.3);
+}
+
+.work-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--overlay-bg);
+    backdrop-filter: blur(4px);
+    color: #fff;
+    font-weight: bold;
+    font-size: 16px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.work-card:hover .work-overlay {
+    opacity: 1;
+}
+
+
+/* ================= OPTIONS GRID ================= */
+
+.options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin-top: 25px;
+}
+
+/* ================= OPTION BUTTON ================= */
+
+.option {
+    padding: 18px;
+    border-radius: 12px;
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid var(--border-soft);
+    color: var(--text);
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    font-weight: 500;
+}
+
+.option:hover:not(:disabled) {
+    border-color: var(--primary);
+    background: rgba(var(--primary-rgb), 0.18);
+    transform: translateY(-2px);
+}
+
+.option:disabled {
+    cursor: not-allowed;
+}
+
+/* Selected state */
+.option.selected {
+    background: rgba(var(--primary-rgb), 0.35);
+    border-color: var(--primary);
+    box-shadow: 0 0 18px rgba(var(--primary-rgb), 0.35);
+}
+
+/* Light mode fixes */
+body.light-mode .option {
+    background: rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+body.light-mode .option:hover:not(:disabled) {
+    border-color: var(--primary);
+    background: rgba(var(--primary-rgb), 0.15);
+    box-shadow: 0 6px 18px rgba(var(--primary-rgb), 0.25);
+}
+
+body.light-mode .option.selected {
+    background: rgba(var(--primary-rgb), 0.22);
+    border-color: var(--primary);
+    box-shadow: 0 0 14px rgba(var(--primary-rgb), 0.3);
+}
+
+/* ================= SUBMIT BUTTON ================= */
+
+#submitBtn {
+    margin-top: 25px;
+    width: 100%;
+    padding: 14px;
+    border-radius: 12px;
+    border: none;
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    color: white;
+    font-weight: bold;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#submitBtn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 30px rgba(var(--primary-rgb), 0.35);
+}
+
+#submitBtn:disabled {
+    opacity: 0.45;
+    filter: grayscale(30%);
+    cursor: not-allowed;
+}
+
+/* ================= RESULT TEXT ================= */
+
+#result {
+    margin-top: 12px;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+/* ================= ABOUT SPLIT ================= */
+
+.about-split {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 48px;
+    align-items: center;
+    margin-bottom: 60px;
+}
+
+.about-text {
+    max-width: 560px;
+}
+
+.about-text h2 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 16px;
+}
+
+.about-text p {
+    font-size: 16px;
+    line-height: 1.75;
+    margin-bottom: 14px;
+    color: var(--text-muted);
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+.about-image img {
+    width: 100%;
+    border-radius: 20px;
+    box-shadow: 0 30px 60px var(--shadow-color);
+}
+
+/* ================= JOURNEY SECTION ================= */
+
+.about-full {
+    margin-bottom: 60px;
+}
+
+.about-full h2 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 16px;
+}
+
+.about-full p {
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text-muted);
+    margin-bottom: 24px;
+}
+
+.parallax-wrap {
+    overflow: hidden;
+    border-radius: 20px;
+    position: relative;
+    margin-top: 24px;
+}
+
+.parallax-wrap img {
+    width: 100%;
+    border-radius: 20px;
+    transform: scale(1.08);
+    transition: transform 1.2s ease;
+}
+
+.parallax-wrap:hover img {
+    transform: translateY(-18px) scale(1.08);
+}
+
+/* ================= TIMELINE ================= */
+
+/* TIMELINE */
+/* TIMELINE (replace existing timeline rules) */
+.about-page ol,
+.timeline,
+main section ol {
+    position: relative;
+    list-style: none;
+    margin-top: 24px;
+    padding: 40px 0;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--border-soft);
+    border-radius: 16px;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 20px 50px var(--shadow-color), inset 0 1px 0 rgba(255,255,255,0.03);
+    overflow: visible; /* ensure ::before and dots are visible */
+    box-sizing: border-box;
+}
+
+/* center vertical line - centered using transform to avoid rounding issues */
+.about-page ol::before,
+.timeline::before,
+main section ol::before {
+    content: "";
+    position: absolute;
+    top: 36px;
+    bottom: 36px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    background: rgba(var(--primary-rgb), 0.28);
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* timeline items */
+.about-page ol li,
+.timeline .timeline-item,
+main section ol li {
+    position: relative;
+    width: 50%;
+    padding: 18px 28px;
+    font-size: 15.5px;
+    line-height: 1.6;
+    color: var(--text-muted);
+    z-index: 2; /* sit above the center line */
+    box-sizing: border-box;
+}
+
+/* left / right placement (no negative padding) */
+.about-page ol li:nth-child(odd),
+.timeline .timeline-item:nth-child(odd),
+main section ol li:nth-child(odd) {
+    left: 0;
+    text-align: right;
+    padding-right: 70px;
+}
+
+.about-page ol li:nth-child(even),
+.timeline .timeline-item:nth-child(even),
+main section ol li:nth-child(even) {
+    left: 50%;
+    text-align: left;
+    padding-left: 70px;
+}
+
+/* dots */
+.about-page ol li::before,
+.timeline .timeline-item::before,
+main section ol li::before {
+    content: "";
+    position: absolute;
+    top: 26px;
+    width: 12px;
+    height: 12px;
+    background: var(--primary);
+    border-radius: 50%;
+    box-shadow: 0 0 0 6px rgba(var(--primary-rgb), 0.12);
+    z-index: 3;
+}
+
+/* dot positions for odd/even */
+.about-page ol li:nth-child(odd)::before,
+.timeline .timeline-item:nth-child(odd)::before,
+main section ol li:nth-child(odd)::before {
+    left: 100%;
+    transform: translateX(-50%);
+}
+
+.about-page ol li:nth-child(even)::before,
+.timeline .timeline-item:nth-child(even)::before,
+main section ol li:nth-child(even)::before {
+    left: 0;
+    transform: translateX(-50%);
+}
+
+/* hover highlight */
+.about-page ol li:hover,
+.timeline .timeline-item:hover,
+main section ol li:hover {
+    background: rgba(255,255,255,0.04);
+    color: var(--text);
+    transform: translateY(-4px);
+    box-shadow: 0 10px 30px var(--shadow-color);
+}
+
+/* MOBILE: stack items and move line to left */
+@media (max-width: 800px) {
+    .about-page ol::before,
+    .timeline::before,
+    main section ol::before {
+        left: 20px;
+        transform: none; /* position by left value on mobile */
+    }
+
+    .about-page ol li,
+    .timeline .timeline-item,
+    main section ol li {
+        width: 100%;
+        margin-left: 0;
+        left: 0;
+        text-align: left;
+        padding: 18px 20px 18px 68px;
+    }
+
+    .about-page ol li:nth-child(odd),
+    .about-page ol li:nth-child(even),
+    .timeline .timeline-item:nth-child(odd),
+    .timeline .timeline-item:nth-child(even),
+    main section ol li:nth-child(odd),
+    main section ol li:nth-child(even) {
+        left: 0;
+        padding: 18px 20px 18px 68px;
+    }
+
+    .about-page ol li::before,
+    .timeline .timeline-item::before,
+    main section ol li::before {
+        left: 20px !important;
+        transform: translateX(-50%);
+    }
+}
+
+/* ================= QUOTE ================= */
+
+.about-quote {
+    max-width: 800px;
+    margin: 80px auto 60px;
+    padding: 0 20px;
+    text-align: center;
+    font-size: 20px;
+    font-style: italic;
+    line-height: 1.6;
+    color: var(--text-muted);
+    position: relative;
+}
+
+/* Opening quote */
+.about-quote::before {
+    content: """";
+    position: absolute;
+    left: -10px;
+    top: -15px;
+    font-size: 48px;
+    color: var(--primary);
+    opacity: 0.9;
+}
+
+/* Closing quote */
+.about-quote::after {
+    content: """";
+    position: absolute;
+    right: -10px;
+    bottom: -30px;
+    font-size: 48px;
+    color: var(--primary);
+    opacity: 0.9;
+}
+
+/* ================= MOBILE RESPONSIVE ================= */
+
+@media (max-width: 700px) {
+    .options {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 800px) {
+    .about-split {
+        grid-template-columns: 1fr;
+        gap: 28px;
+    }
+
+    .about-text {
+        max-width: 100%;
+    }
+
+    .about-text p {
+        text-align: left;
+    }
+
+    /* Timeline stacked */
+    .about-page ol::before,
+    main section ol::before {
+        left: 20px;
+        transform: none;
+    }
+
+    .about-page ol li,
+    main section ol li {
+        width: 100%;
+        left: 0 !important;
+        text-align: left !important;
+        padding-left: 55px;
+        padding-right: 15px;
+        margin-bottom: 20px;
+    }
+
+    .about-page ol li:nth-child(odd),
+    .about-page ol li:nth-child(even),
+    main section ol li:nth-child(odd),
+    main section ol li:nth-child(even) {
+        left: 0;
+        text-align: left;
+        padding-left: 55px;
+        padding-right: 15px;
+    }
+
+    .about-page ol li::before,
+    .about-page ol li:nth-child(odd)::before,
+    .about-page ol li:nth-child(even)::before,
+    main section ol li::before,
+    main section ol li:nth-child(odd)::before,
+    main section ol li:nth-child(even)::before {
+        left: 18px !important;
+        transform: translateX(-50%);
+    }
+
+    .about-quote {
+        font-size: 18px;
+        margin: 60px auto 40px;
+    }
+
+    .about-quote::before {
+        left: 30px;
+        top: -16px;
+        font-size: 40px;
+    }
+
+    .about-quote::after {
+        right: 30px;
+        bottom: -24px;
+        font-size: 40px;
+    }
+}
+
+@media (max-width: 600px) {
+    .about-page {
+        padding: 15px;
+    }
+
+    .about-title h1 {
+        font-size: 34px;
+    }
+
+    .about-page h2 {
+        font-size: 26px;
+    }
+
+    .about-quote {
+        font-size: 15px;
+    }
+
+    .about-quote::before {
+        left: 10px;
+        font-size: 32px;
+    }
+
+    .about-quote::after {
+        right: 15px;
+        font-size: 32px;
+    }
+}
+
+@media (max-width: 480px) {
+    .about-title h1 {
+        font-size: 26px;
+    }
+
+    .about-page h2 {
+        font-size: 22px;
+    }
+
+    .about-quote {
+        font-size: 12px;
+    }
+
+    .about-quote::before,
+    .about-quote::after {
+        font-size: 24px;
+    }
+
+    #submitBtn {
+        padding: 12px;
+        font-size: 14px;
+    }
+
+    .option {
+        padding: 14px;
+        font-size: 13px;
+    }
+}

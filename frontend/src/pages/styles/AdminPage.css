@@ -1,0 +1,210 @@
+/* Portfolio-aligned Admin CSS */
+
+.admin-page {
+    width: 100%;
+    min-height: 100vh;
+    padding: 24px 16px 56px;
+    color: var(--text);
+    background: linear-gradient(180deg, var(--bg), var(--bg-dark));
+}
+
+.admin-page-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Title */
+.admin-page h2 {
+    font-size: 42px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    color: var(--text);
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.admin-page h2::after {
+    content: "";
+    display: block;
+    width: 50px;
+    height: 3px;
+    background: var(--primary);
+    margin-top: 12px;
+    border-radius: 3px;
+}
+
+/* Tabs */
+.admin-tabs {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.admin-tabs button {
+    font-family: inherit;
+    padding: 10px 16px;
+    border-radius: 10px;
+    border: 1px solid var(--border-soft);
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text);
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.25s ease;
+}
+
+.admin-tabs button:hover {
+    transform: translateY(-1px);
+    border-color: rgba(var(--primary-rgb), 0.35);
+    background: rgba(var(--primary-rgb), 0.1);
+}
+
+.admin-tabs button.active {
+    border-color: var(--primary);
+    background: rgba(var(--primary-rgb), 0.18);
+    box-shadow: 0 10px 24px rgba(var(--primary-rgb), 0.22);
+}
+
+/* Table wrapper */
+.admin-table-wrap {
+    width: 100%;
+    overflow-x: auto;
+}
+
+/* Table */
+.admin-table {
+    width: 100%;
+    min-width: 760px;
+    border-collapse: collapse;
+    background: rgba(255, 255, 255, 0.045);
+    border: 1px solid var(--border-soft);
+    border-radius: 14px;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    box-shadow:
+            0 24px 60px var(--shadow-color),
+            inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.admin-table th,
+.admin-table td {
+    padding: 14px 16px;
+    text-align: left;
+}
+
+.admin-table th {
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--primary);
+    font-size: 13px;
+    letter-spacing: 0.3px;
+    font-weight: 700;
+    border-bottom: 1px solid var(--border-soft);
+}
+
+.admin-table td {
+    color: var(--text-muted);
+    border-top: 1px solid var(--border-soft);
+    font-size: 14px;
+    vertical-align: middle;
+}
+
+.admin-table tr:hover td {
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--text);
+}
+
+/* Status badges */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: capitalize;
+    border: 1px solid transparent;
+}
+
+.status-badge.active,
+.status-badge.published {
+    color: #2e7d32;
+    background: rgba(46, 125, 50, 0.12);
+    border-color: rgba(46, 125, 50, 0.28);
+}
+
+.status-badge.inactive,
+.status-badge.removed {
+    color: #c62828;
+    background: rgba(198, 40, 40, 0.12);
+    border-color: rgba(198, 40, 40, 0.28);
+}
+
+/* Buttons */
+.btn-danger,
+.btn-success {
+    font-family: inherit;
+    padding: 8px 12px;
+    border-radius: 10px;
+    border: none;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+}
+
+.btn-danger {
+    color: #fff;
+    background: linear-gradient(135deg, #c62828, #ef5350);
+}
+
+.btn-success {
+    color: #fff;
+    background: linear-gradient(135deg, #2e7d32, #66bb6a);
+}
+
+.btn-danger:hover,
+.btn-success:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
+}
+
+.btn-danger:disabled,
+.btn-success:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Message text */
+.admin-msg {
+    margin-bottom: 12px;
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+/* Responsive */
+@media (max-width: 800px) {
+    .admin-page {
+        padding: 18px 12px 44px;
+    }
+
+    .admin-page h2 {
+        font-size: 32px;
+    }
+
+    .admin-tabs button {
+        padding: 9px 13px;
+        font-size: 13px;
+    }
+
+    .admin-table th,
+    .admin-table td {
+        padding: 12px 12px;
+    }
+}
+
+@media (max-width: 600px) {
+    .admin-page h2 {
+        font-size: 26px;
+    }
+}

@@ -1,0 +1,56 @@
+body {
+  margin: 0;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+/* ==============================
+   COLOR SYSTEM
+============================== */
+
+:root {
+    --primary: #ff5059;
+    --primary-rgb: 255, 80, 89;
+    --primary-light: #ff7a80;
+
+    --bg: #1C3041;
+    --bg-dark: #162533;
+
+    --text: #FDFFFC;
+    --text-muted: #AAB7C4;
+
+    --border-soft: rgba(255,255,255,0.05);
+
+    --shadow-color: rgba(0,0,0,0.35);
+    --overlay-bg: rgba(22, 37, 51, 0.75);
+    --card-bg: rgba(0,0,0,0.25);
+}
+
+body.light-mode {
+    --primary: #2563eb;
+    --primary-rgb: 37, 99, 235;
+    --primary-light: #3b82f6;
+
+    --bg: #F5F7FA;
+    --bg-dark: #E8ECF1;
+
+    --text: #1a1a1a;
+    --text-muted: #5a6a7a;
+
+    --border-soft: rgba(0,0,0,0.08);
+
+    --shadow-color: rgba(0,0,0,0.15);
+}
+body {
+    font-family: Arial, sans-serif;
+    color: var(--text);
+    padding-top: 70px;
+
+    background: linear-gradient(
+            180deg,
+            var(--bg),
+            var(--bg-dark)
+    );
+}

@@ -1,0 +1,76 @@
+/* ================= REVEAL ANIMATIONS ================= */
+
+.reveal {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+/* Only hide when NOT showing (before animation triggers) */
+.reveal:not(.show) {
+    opacity: 0;
+    transform: translateY(40px);
+}
+
+.reveal.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ================= DIRECTIONS ================= */
+
+.reveal-up:not(.show) {
+    opacity: 0;
+    transform: translateY(40px);
+}
+
+.reveal-up.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.reveal-left:not(.show) {
+    opacity: 0;
+    transform: translateX(-40px);
+}
+
+.reveal-left.show {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.reveal-right:not(.show) {
+    opacity: 0;
+    transform: translateX(40px);
+}
+
+.reveal-right.show {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* ================= DELAYS ================= */
+
+.reveal-delay-0 {
+    transition-delay: 0s;
+}
+
+.reveal-delay-1 {
+    transition-delay: 0.1s;
+}
+
+.reveal-delay-2 {
+    transition-delay: 0.2s;
+}
+
+.reveal-delay-3 {
+    transition-delay: 0.3s;
+}
+
+.reveal-delay-4 {
+    transition-delay: 0.4s;
+}
+
+.reveal-delay-5 {
+    transition-delay: 0.5s;
+}
