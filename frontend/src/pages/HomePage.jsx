@@ -8,6 +8,7 @@ import { useEffect, useRef, useState } from "react";
 import ScrollProgress from "../components/ScrollProgress";
 import Reveal from "../components/Reveal";
 import api from "../api/axios";
+import { uploadUrl } from "../utils/url";
 
 export default function HomePage() {
     const typingIntervalRef = useRef(null);
@@ -154,9 +155,7 @@ export default function HomePage() {
                         ) : (
                             <div className="latest-posts-list">
                                 {latestPosts.map((post) => {
-                                    const imageUrl = post?.image
-                                        ? `http://localhost:5000/uploads/${post.image}`
-                                        : "";
+                                    const imageUrl = uploadUrl(post?.image);
 
                                     return (
                                         <article key={post._id} className="latest-post-item">

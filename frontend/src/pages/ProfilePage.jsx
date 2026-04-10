@@ -4,6 +4,7 @@ import Reveal from "../components/Reveal";
 import Notification from "../components/Notification";
 import useNotification from "../hooks/useNotification";
 import api from "../api/axios";
+import { uploadUrl } from "../utils/url";
 import "./styles/ContactPage.css";
 
 export default function ProfilePage() {
@@ -69,9 +70,7 @@ export default function ProfilePage() {
         }
     };
 
-    const picSrc = user?.profilePic
-        ? `http://localhost:5000/uploads/${user.profilePic}`
-        : "/default-avatar.png";
+    const picSrc = user?.profilePic ? uploadUrl(user.profilePic) : "/default-avatar.png";
 
     return (
         <div className="contact-page">

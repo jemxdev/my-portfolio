@@ -6,13 +6,20 @@ import Reveal from "../components/Reveal";
 import Notification from "../components/Notification";
 import useNotification from "../hooks/useNotification";
 import api from "../api/axios";
+import { uploadUrl } from "../utils/url";
 import "./styles/BlogPage.css";
 
 const PAGE_SIZE = 10;
 
 export default function BlogPage() {
-    const { user } = useAuth();
-    const isLoggedIn = !!user;
+    const { user: ctxUser } = useAuth();
+
+    const localUserRaw = typeof window !== "undefined" ? localStorage.getItem("user") : null;
+    const localUser = localUserRaw ? JSON.parse(localUserRaw) : null;
+    const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+
+    const user = ctxUser || localUser;
+    const isLoggedIn = !!token && !!user;
     const [searchParams, setSearchParams] = useSearchParams();
 
     const { notification, showNotification, closeNotification } = useNotification();
@@ -559,11 +566,11 @@ export default function BlogPage() {
                             <>
                                 <div className="blog-feed">
                                     {displayedPosts.map((post) => {
-                                        const imageUrl = post?.image ? `http://localhost:5000/uploads/${post.image}` : "";
-                                        const authorPic = post?.author?.profilePic ? `http://localhost:5000/uploads/${post.author.profilePic}` : "/default-avatar.png";
+                                        const imageUrl = uploadUrl(post?.image);
+                                        const authorPic = post?.author?.profilePic ? uploadUrl(post.author.profilePic) : "/default-avatar.png";
                                         const isShared = !!post?.sharedFrom?.originalPostId;
                                         const shared = post?.sharedFrom || {};
-                                        const sharedImageUrl = shared?.originalImage ? `http://localhost:5000/uploads/${shared.originalImage}` : "";
+                                        const sharedImageUrl = uploadUrl(shared?.originalImage);
 
                                         return (
                                             <article key={post._id} className="blog-card fb-card clickable-card" onClick={() => openCommentsModal(post)} role="button" tabIndex={0}>
@@ -636,7 +643,7 @@ export default function BlogPage() {
                                                                     <img
                                                                         src={
                                                                             shared.originalAuthorPic
-                                                                                ? `http://localhost:5000/uploads/${shared.originalAuthorPic}`
+                                                                                ? uploadUrl(shared.originalAuthorPic)
                                                                                 : "/default-avatar.png"
                                                                         }
                                                                         alt={shared.originalAuthorName || "Original author"}
@@ -727,7 +734,7 @@ export default function BlogPage() {
 
                         <div className="comments-modal-header">
                             <div className="modal-author-row">
-                                <img src={activePost.author?.profilePic ? `http://localhost:5000/uploads/${activePost.author.profilePic}` : "/default-avatar.png"} alt={activePost.author?.name || "Author"} className="modal-avatar" />
+                                <img src={activePost.author?.profilePic ? uploadUrl(activePost.author.profilePic) : "/default-avatar.png"} alt={activePost.author?.name || "Author"} className="modal-avatar" />
                                 <div>
                                     <p className="modal-name">{activePost.author?.name || "Unknown"}</p>
                                     <p className="modal-date">{activePost.createdAt ? new Date(activePost.createdAt).toLocaleDateString() : ""}</p>
@@ -770,7 +777,7 @@ export default function BlogPage() {
                                                     <img
                                                         src={
                                                             activePost.sharedFrom.originalAuthorPic
-                                                                ? `http://localhost:5000/uploads/${activePost.sharedFrom.originalAuthorPic}`
+                                                                ? uploadUrl(activePost.sharedFrom.originalAuthorPic)
                                                                 : "/default-avatar.png"
                                                         }
                                                         alt={activePost.sharedFrom.originalAuthorName || "Original author"}
@@ -791,7 +798,7 @@ export default function BlogPage() {
                                                 {!!activePost.sharedFrom.originalImage && (
                                                     <img
                                                         className="shared-visual-image"
-                                                        src={`http://localhost:5000/uploads/${activePost.sharedFrom.originalImage}`}
+                                                        src={uploadUrl(activePost.sharedFrom.originalImage)}
                                                         alt={activePost.sharedFrom.originalTitle || "Shared image"}
                                                     />
                                                 )}
@@ -807,7 +814,7 @@ export default function BlogPage() {
                             )}
 
                             {!activePost?.sharedFrom?.originalPostId && activePost.image && (
-                                <img className="comments-post-image" src={`http://localhost:5000/uploads/${activePost.image}`} alt={activePost.title || "Post image"} />
+                                <img className="comments-post-image" src={uploadUrl(activePost.image)} alt={activePost.title || "Post image"} />
                             )}
                         </div>
 
