@@ -5,6 +5,7 @@ const User = require('../models/User');
 const { protect } = require('../middleware/auth.middleware');
 const upload = require('../middleware/upload');
 const router = express.Router();
+const user = await User.create({ name, email, password, role: "member" });
 
 // Helper function — generates a JWT token that expires in 7 days
 const generateToken = (id) => jwt.sign({ id }, process.env.JWT_SECRET,

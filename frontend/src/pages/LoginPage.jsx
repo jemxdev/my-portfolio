@@ -58,7 +58,7 @@ export default function LoginPage() {
                     _id: data.user?._id || "",
                     name: data.user?.name || "",
                     email: data.user?.email || "",
-                    role: data.user?.role === "admin" ? "admin" : "user",
+                    role: data.user?.role || "member",
                     profilePic: data.user?.profilePic || "",
                 })
             );

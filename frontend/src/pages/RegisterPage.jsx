@@ -76,7 +76,7 @@ export default function RegisterPage() {
                     _id: data.user?._id || "",
                     name: data.user?.name || "",
                     email: data.user?.email || "",
-                    role: data.user?.role === "admin" ? "admin" : "user",
+                    role: data.user?.role || "member",
                 })
             );
 
