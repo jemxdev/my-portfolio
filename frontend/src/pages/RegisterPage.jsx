@@ -54,33 +54,37 @@ export default function RegisterPage() {
 
     const onSubmit = async (e) => {
         e.preventDefault();
+        console.log("SUBMIT CLICKED", formData);
+
         if (submitting) return;
-        if (!validateForm()) return;
+
+        // TEMP: bypass all custom validation to confirm request works
+        const payload = {
+            name: formData.name?.trim(),
+            email: formData.email?.trim().toLowerCase(),
+            password: formData.password,
+        };
+
+        if (!payload.name || !payload.email || !payload.password) {
+            showNotification("Name, email, and password are required", "error");
+            return;
+        }
 
         try {
             setSubmitting(true);
+            console.log("Sending register request...", payload);
 
-            const { data } = await api.post("/auth/register", {
-                name: formData.name.trim(),
-                email: formData.email.trim().toLowerCase(),
-                password: formData.password,
-            });
+            const { data } = await api.post("/auth/register", payload);
+            console.log("Register success:", data);
 
             localStorage.setItem("token", data.token);
-            localStorage.setItem(
-                "user",
-                JSON.stringify({
-                    _id: data.user?._id || "",
-                    name: data.user?.name || "",
-                    email: data.user?.email || "",
-                    role: data.user?.role || "member",
-                })
-            );
-
+            localStorage.setItem("user", JSON.stringify(data.user));
             window.dispatchEvent(new Event("auth-changed"));
+
             showNotification("Registration successful!", "success");
             setTimeout(() => navigate("/"), 900);
         } catch (err) {
+            console.error("Register error:", err?.response || err);
             showNotification(err?.response?.data?.message || "Registration failed", "error");
         } finally {
             setSubmitting(false);
