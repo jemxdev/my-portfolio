@@ -563,9 +563,10 @@ main section ol li:hover {
 }
 @media (max-width: 600px) {
     .about-page {
-        width: calc(100% + 5px);
-        margin-left: -2.5px;
-        margin-right: -2.5px;
+        width: 90%;
+        margin-left: 12px;
+        margin-right: 0;
+        padding: 15px;
     }
 }
 @media (max-width: 600px) {
