@@ -46,10 +46,7 @@ export default function RegisterPage() {
 
         if (!formData.confirmPassword) newErrors.confirmPassword = "Please confirm your password";
         else if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = "Passwords do not match";
-
-        if (!formData.birthday) newErrors.birthday = "Birthday is required";
-        if (!formData.gender) newErrors.gender = "Please select a gender";
-        if (!formData.accountType) newErrors.accountType = "Please select an interest level";
+        
 
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
@@ -162,10 +159,6 @@ export default function RegisterPage() {
                             </div>
                             {errors.confirmPassword && <span className="error">{errors.confirmPassword}</span>}
                         </div>
-
-                        <input type="hidden" name="birthday" value={formData.birthday} onChange={handleChange} />
-                        <input type="hidden" name="gender" value={formData.gender} onChange={handleChange} />
-                        <input type="hidden" name="accountType" value={formData.accountType} onChange={handleChange} />
 
                         <button type="submit" disabled={submitting}>
                             {submitting ? "Creating account..." : "Register"}
