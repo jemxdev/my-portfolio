@@ -31,5 +31,4 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-app.options(/.*/, cors(corsOptions)); // preflight
-app.use(express.json());
+app.options("*", cors(corsOptions));
