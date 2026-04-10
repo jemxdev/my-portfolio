@@ -30,8 +30,7 @@ app.use(
             "http://127.0.0.1:5173",
             "http://localhost:8080",
             "http://127.0.0.1:8080",
-            // add your Vercel domain here later:
-            // "https://your-frontend.vercel.app",
+            "https://my-portfolio-six-virid-23.vercel.app",
         ],
         credentials: true,
         methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
