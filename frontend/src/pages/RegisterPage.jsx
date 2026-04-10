@@ -164,7 +164,11 @@ export default function RegisterPage() {
                             {errors.confirmPassword && <span className="error">{errors.confirmPassword}</span>}
                         </div>
 
-                        <button type="submit" disabled={submitting}>
+                        <button
+                            type="button"
+                            disabled={submitting}
+                            onClick={onSubmit}
+                        >
                             {submitting ? "Creating account..." : "Register"}
                         </button>
 
