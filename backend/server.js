@@ -1,11 +1,12 @@
 const path = require("path");
-require("dotenv").config({ path: path.join(__dirname, ".env"), override: true });
-console.log("DOTENV PATH =>", path.join(__dirname, ".env"));
-console.log("PORT =>", process.env.PORT);
+
+// Load .env only for local development
+if (process.env.NODE_ENV !== "production") {
+    require("dotenv").config({ path: path.join(__dirname, ".env") });
+}
 
 const express = require("express");
 const cors = require("cors");
-
 
 const connectDB = require("./config/db");
 
@@ -17,9 +18,7 @@ const contactRoutes = require("./routes/contact.routes");
 
 const app = express();
 
-console.log("MONGO_URI loaded:", !!process.env.MONGO_URI);
-console.log("PORT from env:", process.env.PORT);
-
+// Connect to MongoDB
 connectDB();
 
 app.use(
@@ -31,6 +30,8 @@ app.use(
             "http://127.0.0.1:5173",
             "http://localhost:8080",
             "http://127.0.0.1:8080",
+            // add your Vercel domain here later:
+            // "https://your-frontend.vercel.app",
         ],
         credentials: true,
         methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
@@ -51,5 +52,5 @@ app.get("/", (req, res) => res.send("API running"));
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+    console.log(`Server is running on port ${PORT}`);
 });
