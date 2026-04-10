@@ -1,8 +1,6 @@
 import axios from "axios";
 
-const baseURL =
-    (typeof process !== "undefined" && process.env && process.env.REACT_APP_API_URL) ||
-    "http://localhost:5000/api";
+const baseURL = "https://my-portfolio-oe6w.onrender.com/api";
 
 const api = axios.create({
     baseURL,
