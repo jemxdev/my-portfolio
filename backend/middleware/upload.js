@@ -1,34 +1,27 @@
-// backend/middleware/upload.js
 const multer = require('multer');
-const path = require('path');
-const fs = require('fs');
-// Create uploads/ folder if it does not exist yet
-if (!fs.existsSync('uploads')) {
-    fs.mkdirSync('uploads');
-}
-// Where and how to save uploaded files
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => cb(null, 'uploads/'),
-    filename: (req, file, cb) => {
-// Create a unique filename: timestamp + random number + original extension
-        const unique = Date.now() + '-' + Math.round(Math.random() * 1e9);
-        cb(null, unique + path.extname(file.originalname));
-// Example result: 1719123456789-342156789.jpg
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const cloudinary = require('cloudinary').v2;
+
+// 1. Configure Cloudinary with your environment variables
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
+});
+
+// 2. Set up the Cloudinary storage engine
+const storage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+        folder: 'my-portfolio', 
+        allowed_formats: ['jpg', 'jpeg', 'png', 'gif', 'webp'],
     },
 });
-// Only allow image file types
-const fileFilter = (req, file, cb) => {
-    const allowedTypes = /jpeg|jpg|png|gif|webp/;
-    const ext =
-        allowedTypes.test(path.extname(file.originalname).toLowerCase());
-    const mime = allowedTypes.test(file.mimetype);
-    if (ext && mime) return cb(null, true);
-    cb(new Error('Only image files are allowed (jpg, png, gif, webp)'));
-};
+
+// 3. Initialize Multer
 const upload = multer({
-    storage,
-    fileFilter,
-    limits: { fileSize: 5 * 1024 * 1024 }, // max 5 MB per file
+    storage: storage,
+    limits: { fileSize: 5 * 1024 * 1024 }, // max 5 MB
 });
 
 module.exports = upload;

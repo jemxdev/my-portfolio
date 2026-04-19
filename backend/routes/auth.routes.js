@@ -65,7 +65,7 @@ router.put('/profile', protect, upload.single('profilePic'), async (req, res) =>
         const update = {};
         if (req.body.name) update.name = req.body.name;
         if (req.body.bio) update.bio = req.body.bio;
-        if (req.file) update.profilePic = req.file.filename;
+        if (req.file) update.profilePic = req.file.path;
 
         const updated = await User.findByIdAndUpdate(
             req.user._id,
