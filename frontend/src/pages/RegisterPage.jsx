@@ -55,51 +55,37 @@ export default function RegisterPage() {
 
     const onSubmit = async (e) => {
         e.preventDefault();
-        console.log("SUBMIT CLICKED", formData);
-            
-        if (submitting) return;
 
+        if (submitting) return;
         if (!validateForm()) {
             showNotification("Please fix the errors in the form", "error");
             return;
         }
-        
+
         const payload = {
-            name: formData.name?.trim(),
-            email: formData.email?.trim().toLowerCase(),
+            name: formData.name.trim(),
+            email: formData.email.trim().toLowerCase(),
             password: formData.password,
         };
-        
-        
-        if (!payload.name || !payload.email || !payload.password) {
-            showNotification("Name, email, and password are required", "error");
-            return;
-        }
 
         let wakeUpTimer;
-        
+
         try {
             setSubmitting(true);
             setSubmitText("Creating account...");
-            
+
             wakeUpTimer = setTimeout(() => {
-                setSubmitText("Waking up server,This can take about 50 seconds... Hang tight! ");
-            }, 5000);
-            
-            console.log("Sending register request...", payload);
+                setSubmitText("Waking up server... Hang tight! 🚀");
+            }, 3000);
 
+            // Send the request
             const { data } = await api.post("/auth/register", payload);
-
             clearTimeout(wakeUpTimer);
 
-            console.log("Register success:", data);
+            // REMOVED: localStorage.setItem and auth-changed event
 
-            localStorage.setItem("token", data.token);
-            localStorage.setItem("user", JSON.stringify(data.user));
-            window.dispatchEvent(new Event("auth-changed"));
-
-            showNotification("Registration successful!", "success");
-            setTimeout(() => navigate("/"), 900);
+            showNotification(data.message, "success"); // Show "Check your email" message
+            setTimeout(() => navigate("/login"), 2500); // Send them to login page
         } catch (err) {
             console.error("Register error:", err?.response || err);
             showNotification(err?.response?.data?.message || "Registration failed", "error");
