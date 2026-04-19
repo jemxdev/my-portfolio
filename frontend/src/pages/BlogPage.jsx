@@ -45,7 +45,8 @@ export default function BlogPage() {
 
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
-
+    const [loadingText, setLoadingText] = useState("Loading posts...");
+    
     const [body, setBody] = useState("");
     const [title, setTitle] = useState("");
     const [image, setImage] = useState(null);
@@ -101,7 +102,17 @@ export default function BlogPage() {
 
     const fetchPosts = async () => {
         try {
+            setLoading(true);
+            setLoadingText("Loading posts...");
+            
+            const wakeUpTimer = setTimeout(() => {
+                setLoadingText("Waking up the server... This can take about 50 seconds. Hang tight!");
+            }, 5000)
+
             const { data } = await api.get("/posts");
+
+            clearTimeout(wakeUpTimer);
+            
             const normalized = Array.isArray(data) ? data : [];
             const myId = user?._id;
 
@@ -587,7 +598,12 @@ export default function BlogPage() {
                         </div>
 
                         {loading ? (
-                            <p>Loading posts...</p>
+                            <div style={{ textAlign: "center", padding: "40px 20px" }}>
+                                <div className="spinner"></div> {/* Optional: Add a CSS spinner here if you have one */}
+                                <p style={{ color: "var(--text-muted)", fontSize: "1.1rem", marginTop: "15px" }}>
+                                    {loadingText}
+                                </p>
+                            </div>
                         ) : visiblePosts.length === 0 ? (
                             <p>No matching posts.</p>
                         ) : (
