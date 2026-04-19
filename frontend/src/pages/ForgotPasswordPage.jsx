@@ -35,6 +35,7 @@ export default function ForgotPasswordPage() {
                 <Reveal direction="up">
                     <section className="auth-card">
                         <h2>Forgot Password</h2>
+                        <div className="title-underline"></div>
                         {success ? (
                             <p style={{ marginTop: 15 }}>Check your email for a link to reset your password. If it doesn't appear within a few minutes, check your spam folder.</p>
                         ) : (

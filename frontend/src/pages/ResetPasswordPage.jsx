@@ -40,6 +40,7 @@ export default function ResetPasswordPage() {
                 <Reveal direction="up">
                     <section className="auth-card">
                         <h2>Reset Password</h2>
+                        <div className="title-underline"></div>
                         <form onSubmit={handleSubmit}>
                             <div className="form-field">
                                 <label>New Password:</label>
