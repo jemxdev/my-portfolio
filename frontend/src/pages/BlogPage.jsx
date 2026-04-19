@@ -13,16 +13,35 @@ const PAGE_SIZE = 10;
 
 export default function BlogPage() {
     const { user: ctxUser } = useAuth();
-
-    const localUserRaw = typeof window !== "undefined" ? localStorage.getItem("user") : null;
-    const localUser = localUserRaw ? JSON.parse(localUserRaw) : null;
-    const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
-
-    const user = ctxUser || localUser;
-    const isLoggedIn = !!token && !!user;
     const [searchParams, setSearchParams] = useSearchParams();
-
     const { notification, showNotification, closeNotification } = useNotification();
+
+    // --- NEW STATE & AUTH LISTENER START ---
+    const [user, setUser] = useState(ctxUser || null);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    useEffect(() => {
+        const syncAuth = () => {
+            const rawUser = localStorage.getItem("user");
+            const token = localStorage.getItem("token");
+            const parsedUser = rawUser ? JSON.parse(rawUser) : null;
+
+            const activeUser = ctxUser || parsedUser;
+            setUser(activeUser);
+            setIsLoggedIn(!!token && !!activeUser);
+        };
+
+        syncAuth(); // Sync immediately on load
+
+        // Listen for the custom event from Navbar/Login/Logout
+        window.addEventListener("auth-changed", syncAuth);
+        window.addEventListener("storage", syncAuth);
+
+        return () => {
+            window.removeEventListener("auth-changed", syncAuth);
+            window.removeEventListener("storage", syncAuth);
+        };
+    }, [ctxUser]);
 
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
