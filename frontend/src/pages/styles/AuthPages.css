@@ -4,7 +4,7 @@
 
 /* The main card container */
 .auth-card {
-    max-width: 420px;
+    max-width: 500px;
     margin: 40px auto 80px;
     background: var(--bg);
     padding: 30px;
@@ -30,6 +30,8 @@ body:not(.light-mode) .auth-card {
     display: flex;
     flex-direction: column;
     gap: 14px;
+    max-width: 400px;
+    margin: 0 auto;
 }
 
 /* Labels and Field Wrappers */
@@ -152,4 +154,18 @@ body:not(.light-mode) .auth-card {
     color: var(--error, #ff4d4d);
     font-size: 12px;
     margin-top: 2px;
+}
+
+.auth-page-wrapper {
+    min-height: calc(100vh - 200px); /* Adjusts for the height of your navbar + footer */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 16px;
+}
+
+.auth-page-wrapper main {
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }

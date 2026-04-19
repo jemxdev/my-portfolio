@@ -42,11 +42,13 @@ export default function LoginPage() {
         if (submitting) return;
         if (!validate()) return;
 
+        let wakeUpTimer;
+        
         try {
             setSubmitting(true);
             setSubmitText("Logging in...");
 
-            const wakeUpTimer = setTimeout(() => {
+            wakeUpTimer = setTimeout(() => {
                 setSubmitText("Waking up server,This can take about 50 seconds... Hang tight! ");
             }, 5000);
 
@@ -77,6 +79,7 @@ export default function LoginPage() {
         } catch (err) {
             showNotification(err?.response?.data?.message || "Login failed", "error");
         } finally {
+            clearTimeout(wakeUpTimer);
             setSubmitting(false);
             setSubmitText("Login");
         }
@@ -142,7 +145,8 @@ export default function LoginPage() {
 
                             <p style={{ marginTop: 12 }}>
                                 No account? <Link to="/forgot-password">Register</Link>
-                                <Link to="/forgot-password">Forgot Password?</Link>
+                                <br></br>
+                                Forgot Password? <Link to="/forgot-password">Forgot Password?</Link>
                             </p>
                         </form>
                     </section>

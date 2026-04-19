@@ -69,17 +69,20 @@ export default function RegisterPage() {
             email: formData.email?.trim().toLowerCase(),
             password: formData.password,
         };
-
+        
+        
         if (!payload.name || !payload.email || !payload.password) {
             showNotification("Name, email, and password are required", "error");
             return;
         }
 
+        let wakeUpTimer;
+        
         try {
             setSubmitting(true);
             setSubmitText("Creating account...");
             
-            const wakeUpTimer = setTimeout(() => {
+            wakeUpTimer = setTimeout(() => {
                 setSubmitText("Waking up server,This can take about 50 seconds... Hang tight! ");
             }, 5000);
             
@@ -101,6 +104,7 @@ export default function RegisterPage() {
             console.error("Register error:", err?.response || err);
             showNotification(err?.response?.data?.message || "Registration failed", "error");
         } finally {
+            clearTimeout(wakeUpTimer);
             setSubmitting(false);
             setSubmitText("Register");
         }

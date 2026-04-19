@@ -34,7 +34,7 @@ export default function ResetPasswordPage() {
     };
 
     return (
-        <div className="contact-page">
+        <div className="auth-page-wrapper">
             <Notification open={notification.open} message={notification.message} type={notification.type} onClose={closeNotification} />
             <main>
                 <Reveal direction="up">
