@@ -14,45 +14,98 @@ const generateToken = (id) => jwt.sign({ id }, process.env.JWT_SECRET,
 // ── POST /api/auth/register ───────────────────────────────────
 router.post('/register', async (req, res) => {
     const { name, email, password } = req.body;
-
     try {
         const exists = await User.findOne({ email });
         if (exists) {
             return res.status(400).json({ message: 'Email is already registered' });
         }
 
-        const user = await User.create({ name, email, password, role: 'member' });
+        // Generate verification token
+        const verificationToken = crypto.randomBytes(20).toString('hex');
+        const hashedToken = crypto.createHash('sha256').update(verificationToken).digest('hex');
 
-        return res.status(201).json({
-            token: generateToken(user._id),
-            user: {
-                _id: user._id,
-                name: user.name,
-                email: user.email,
-                role: user.role,
-            },
+        // Create the user but mark them as unverified
+        const user = await User.create({
+            name,
+            email,
+            password,
+            role: 'member',
+            isVerified: false,
+            verificationToken: hashedToken
         });
+
+        // Create verification URL
+        const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+        const verifyUrl = `${frontendUrl}/verify-email/${verificationToken}`;
+
+        const message = `Welcome to My Portfolio!\n\nPlease click the link below to verify your email address and activate your account:\n\n${verifyUrl}`;
+
+        try {
+            await sendEmail({
+                email: user.email,
+                subject: 'Verify Your Email Address',
+                message,
+            });
+            return res.status(201).json({ message: 'Registration successful! Please check your email to verify your account.' });
+        } catch (err) {
+            // If the email fails to send, delete the user so they can try again
+            await User.findByIdAndDelete(user._id);
+            console.error("NODEMAILER ERROR:", err);
+            return res.status(500).json({ message: 'Failed to send verification email. Please try again.' });
+        }
     } catch (err) {
         return res.status(500).json({ message: err.message });
     }
 });
-// ── POST /api/auth/login ──────────────────────────────────────
+
+    // ── GET /api/auth/verify-email/:token ─────────────────────────
+    router.get('/verify-email/:token', async (req, res) => {
+        try {
+            // Hash the token from the URL to compare it with the DB
+            const verificationToken = crypto.createHash('sha256').update(req.params.token).digest('hex');
+    
+            const user = await User.findOne({ verificationToken });
+    
+            if (!user) {
+                return res.status(400).json({ message: 'Invalid or expired verification token' });
+            }
+    
+            // Mark user as verified and clear the token
+            user.isVerified = true;
+            user.verificationToken = undefined;
+            await user.save();
+    
+            res.status(200).json({ message: 'Email verified successfully! You can now log in.' });
+        } catch (err) {
+            res.status(500).json({ message: err.message });
+        }
+    });
+    
+    // ── POST /api/auth/login ──────────────────────────────────────
     router.post('/login', async (req, res) => {
         const { email, password } = req.body;
         try {
             const user = await User.findOne({ email });
             if (!user) return res.status(400).json({ message: 'Invalid email or password' });
-                if (user.status === 'inactive')
-            return res.status(403).json({ message: 'Your account is deactivated. Please contact the admin.' });
-                const match = await user.matchPassword(password);
-                if (!match) return res.status(400).json({ message: 'Invalid email or password' });
-                res.json({
-                    token: generateToken(user._id),
-                    user: { _id: user._id, name: user.name, email: user.email, role:
-                        user.role, profilePic: user.profilePic }
-                });
-            } catch (err) { res.status(500).json({ message: err.message }); }
-        });
+    
+            // Block unverified users
+            if (!user.isVerified) {
+                return res.status(403).json({ message: 'Please check your email and verify your account before logging in.' });
+            }
+    
+            if (user.status === 'inactive') return res.status(403).json({ message: 'Your account is deactivated. Please contact the admin.' });
+    
+            const match = await user.matchPassword(password);
+            if (!match) return res.status(400).json({ message: 'Invalid email or password' });
+    
+            res.json({
+                token: generateToken(user._id),
+                user: { _id: user._id, name: user.name, email: user.email, role: user.role, profilePic: user.profilePic }
+            });
+        } catch (err) {
+            res.status(500).json({ message: err.message });
+        }
+    });
 // ── GET /api/auth/me
 // Returns the currently logged-in user's data (requires token)
             router.get('/me', protect, async (req, res) => {
