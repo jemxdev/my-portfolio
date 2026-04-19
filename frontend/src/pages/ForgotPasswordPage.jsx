@@ -4,7 +4,7 @@ import api from "../api/axios";
 import Reveal from "../components/Reveal";
 import Notification from "../components/Notification";
 import useNotification from "../hooks/useNotification";
-import "./styles/ContactPage.css"; // Reuse your existing form styles
+import "./styles/AuthPages.css";
 
 export default function ForgotPasswordPage() {
     const { notification, showNotification, closeNotification } = useNotification();
@@ -29,7 +29,7 @@ export default function ForgotPasswordPage() {
     };
 
     return (
-        <div className="contact-page">
+        <div className="forgot-password-page">
             <Notification open={notification.open} message={notification.message} type={notification.type} onClose={closeNotification} />
             <main>
                 <Reveal direction="up">

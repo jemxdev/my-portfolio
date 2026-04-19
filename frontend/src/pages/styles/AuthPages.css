@@ -1,0 +1,99 @@
+.forgot-password-page,
+.reset-password-page {
+    max-width: 420px;
+    margin: 70px auto;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.08);
+    backdrop-filter: blur(12px);
+    animation: fadeInUp 0.6s ease;
+}
+
+/* If your app uses dark mode, this keeps the card looking good on dark backgrounds */
+body:not(.light-mode) .forgot-password-page,
+body:not(.light-mode) .reset-password-page {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-soft);
+}
+
+.forgot-password-page h2,
+.reset-password-page h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+.forgot-password-page form,
+.reset-password-page form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.forgot-password-page input,
+.reset-password-page input {
+    padding: 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    background: var(--input-bg);
+    color: var(--text);
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+body:not(.light-mode) .forgot-password-page input,
+body:not(.light-mode) .reset-password-page input {
+    border-color: var(--border-soft);
+}
+
+.forgot-password-page input:focus,
+.reset-password-page input:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+    outline: none;
+}
+
+.forgot-password-page button[type="submit"],
+.reset-password-page button[type="submit"] {
+    background: linear-gradient(135deg, #2563eb, #4f46e5);
+    color: white;
+    padding: 12px;
+    border-radius: 12px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    margin-top: 10px;
+}
+
+.forgot-password-page button[type="submit"]:hover:not(:disabled),
+.reset-password-page button[type="submit"]:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(37, 99, 235, 0.3);
+}
+
+.forgot-password-page button[type="submit"]:disabled,
+.reset-password-page button[type="submit"]:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.forgot-password-page p,
+.reset-password-page p {
+    text-align: center;
+    margin-top: 14px;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.forgot-password-page a,
+.reset-password-page a {
+    color: #2563eb;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.forgot-password-page a:hover,
+.reset-password-page a:hover {
+    text-decoration: underline;
+}

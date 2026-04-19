@@ -4,7 +4,7 @@ import api from "../api/axios";
 import Reveal from "../components/Reveal";
 import Notification from "../components/Notification";
 import useNotification from "../hooks/useNotification";
-import "./styles/ContactPage.css";
+import "./styles/AuthPages.css";
 
 export default function ResetPasswordPage() {
     const { token } = useParams();
@@ -34,7 +34,7 @@ export default function ResetPasswordPage() {
     };
 
     return (
-        <div className="contact-page">
+        <div className="reset-password-page">
             <Notification open={notification.open} message={notification.message} type={notification.type} onClose={closeNotification} />
             <main>
                 <Reveal direction="up">
