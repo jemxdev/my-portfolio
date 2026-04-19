@@ -70,7 +70,9 @@ export default function BlogPage() {
     const [shareOpen, setShareOpen] = useState(false);
     const [sharePost, setSharePost] = useState(null);
     const [sharingAsPost, setSharingAsPost] = useState(false);
-
+    const [shareTitle, setShareTitle] = useState("");
+    const [shareBody, setShareBody] = useState("");
+    
     const [menuOpenPostId, setMenuOpenPostId] = useState(null);
     const [modalMenuOpen, setModalMenuOpen] = useState(false);
 
@@ -228,6 +230,13 @@ export default function BlogPage() {
 
     const openShareModal = (post) => {
         setSharePost(post);
+
+        const src = post.sharedFrom?.originalPostId ? post.sharedFrom : null;
+        const origTitle = src?.originalTitle || post.title || "";
+
+        setShareTitle(origTitle ? `Shared: ${origTitle}` : "Shared Post");
+        setShareBody("");
+        
         setShareOpen(true);
     };
 
@@ -270,8 +279,8 @@ export default function BlogPage() {
             };
 
             const payload = {
-                title: normalizedSharedFrom.originalTitle ? `Shared: ${normalizedSharedFrom.originalTitle}` : "Shared Post",
-                body: normalizedSharedFrom.originalBody || "Shared post",
+                title: shareTitle.trim(),
+                body: shareBody.trim(),
                 sharedFrom: normalizedSharedFrom,
             };
 
@@ -900,10 +909,35 @@ export default function BlogPage() {
                     <div className="share-modal" onClick={(e) => e.stopPropagation()}>
                         <button className="share-close" onClick={closeShareModal} aria-label="Close share modal">✕</button>
                         <h3>Share Post</h3>
-                        <p className="share-caption">
-                            {sharePost.title ? `“${sharePost.title}”` : "Untitled post"} by {sharePost.author?.name || "Unknown"}
-                        </p>
+
+                        {/* --- NEW INPUT FIELDS --- */}
+                        <div style={{ marginTop: '1rem', marginBottom: '1rem' }}>
+                            <input
+                                type="text"
+                                className="edit-input"
+                                value={shareTitle}
+                                onChange={(e) => setShareTitle(e.target.value)}
+                                placeholder="Title for your shared post"
+                            />
+                            <textarea
+                                className="edit-textarea"
+                                value={shareBody}
+                                onChange={(e) => setShareBody(e.target.value)}
+                                rows={3}
+                                placeholder="Say something about this..."
+                                style={{ marginTop: '10px' }}
+                            />
+                        </div>
+
+                        {/* Visual preview so they know what they are sharing */}
+                        <div className="shared-visual-card" style={{ pointerEvents: 'none', opacity: 0.8, marginBottom: '1rem' }}>
+                            <p className="share-caption" style={{ margin: 0, fontWeight: 'bold' }}>
+                                Original post by {sharePost.sharedFrom?.originalAuthorName || sharePost.author?.name || "Unknown"}
+                            </p>
+                        </div>
+
                         <div className="share-link-preview">{getPostLink(sharePost)}</div>
+
                         <div className="share-actions">
                             <button type="button" className="share-btn secondary" onClick={handleCopyLink}>Copy link</button>
                             <button type="button" className="share-btn primary" onClick={handleShareAsNewPost} disabled={sharingAsPost}>
