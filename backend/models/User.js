@@ -18,7 +18,8 @@ const userSchema = new mongoose.Schema({
     resetPasswordToken: String,
     resetPasswordExpire: Date,
 
-
+    twoFactorCode: String,
+    twoFactorExpire: Date,
     
 }, { timestamps: true }); // adds createdAt and updatedAt automatically
 // ── Pre-save hook: hash password before storing ────────────────

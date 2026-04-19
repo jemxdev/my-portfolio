@@ -1,70 +1,228 @@
-.login-page {
-    max-width: 420px;
-    margin: 70px auto;
-    background: rgba(255,255,255,0.9);
-    padding: 30px;
-    border-radius: 16px;
-    box-shadow: 0 14px 30px rgba(0,0,0,0.08);
-    backdrop-filter: blur(12px);
-    animation: fadeInUp 0.6s ease;
+/* =========================
+   LOGIN PAGE
+   ========================= */
+
+.login-page-container {
+    min-height: calc(90vh - 140px);
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 60px 20px;
 }
 
-.login-page h2 {
-    text-align: center;
-    margin-bottom: 20px;
-    font-weight: 700;
-}
-
-.login-page form {
+.login-page-container main {
+    width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    max-width: 1000px;
 }
 
+.login-page-container main > h2 {
+    text-align: left;
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 24px;   /* ← move margin to the h2 itself */
+    padding-left: 4px;
+    display: block;        /* ← ensure it's block level */
+}
+.title-underline {
+    width: 40px;
+    height: 3px;
+    background: var(--primary);
+    border-radius: 2px;
+    margin-top: 6px;
+    margin-bottom: 24px;
+}
+
+/* The Card */
+.login-page {
+    width: 100%;
+    max-width: 1000px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border-soft);
+    border-radius: 16px;
+    padding: 40px 50px;
+    box-shadow: 0 14px 30px var(--shadow-color);
+    backdrop-filter: blur(12px);
+    animation: fadeUp 0.6s ease both;
+    box-sizing: border-box;
+}
+
+/* Light mode fallback */
+body.light-mode .login-page {
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 14px 30px rgba(0,0,0,0.08);
+}
+
+/* Hide h2 inside the card (it's now above) */
+.login-page h2 {
+    display: none;
+}
+
+/* FORM - stretch to full width */
+.login-page form,
+.login-page .login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.login-page .form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.login-page .form-field label {
+    font-size: 13px;
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+/* Inputs */
 .login-page input {
-    padding: 12px;
-    border: 1px solid #e5e7eb;
-    border-radius: 12px;
-    transition: border-color 0.2s, box-shadow 0.2s;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--border-soft) !important;
+    background: var(--input-bg) !important;
+    color: var(--text);
+    outline: none !important;
+    box-shadow: none !important;
+    transition: border 0.2s ease, background 0.2s ease;
+    font-family: inherit;
+    font-size: 14px;
 }
 
 .login-page input:focus {
-    border-color: #2563eb;
-    box-shadow: 0 0 0 4px rgba(37,99,235,0.15);
+    border-color: var(--primary) !important;
+    box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.25) !important;
+    background: var(--input-bg-focus) !important;
 }
-.a {
+
+/* Password Toggle Wrapper */
+.login-page .password-wrap {
+    position: relative;
     display: flex;
     align-items: center;
-    gap: 6px;
-    font-size: 13px;
-    color: #2563eb;
-    font-weight: 600;
-    text-decoration: none;
+    width: 100%;
+    box-sizing: border-box;
 }
-.login-page button {
-    background: linear-gradient(135deg, #2563eb, #4f46e5);
-    color: white;
-    padding: 12px;
-    border-radius: 12px;
+
+.login-page .password-input {
+    padding-right: 70px !important;
+}
+
+.login-page .password-toggle {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--border-soft);
+    border-radius: 8px;
+    color: var(--text-muted);
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    padding: 0 10px;
+    height: 28px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-page .password-toggle:hover {
+    color: var(--text);
+    border-color: rgba(var(--primary-rgb), 0.4);
+    background: rgba(var(--primary-rgb), 0.14);
+}
+
+/* Submit Button */
+.login-page button[type="submit"] {
+    width: 100%;
+    margin-top: 10px;
+    padding: 14px;
+    border-radius: 10px;
     border: none;
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    color: #fff;
+    font-weight: bold;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 20px rgba(var(--primary-rgb), 0.3);
+}
+
+.login-page button[type="submit"]:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(var(--primary-rgb), 0.45);
+    background: linear-gradient(135deg, var(--primary-light), var(--primary));
+}
+
+/* Secondary Button */
+.login-page .secondary-btn {
+    width: 100%;
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border-soft);
+    padding: 12px;
+    border-radius: 10px;
     font-weight: 600;
     cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
+    margin-top: 10px;
 }
 
-.login-page button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 18px rgba(37,99,235,0.3);
+.login-page .secondary-btn:hover {
+    background: rgba(255, 255, 255, 0.05);
 }
 
-.login-page .error-msg {
-    background: #fee2e2;
-    color: #991b1b;
-    padding: 8px 10px;
-    border-radius: 10px;
+body.light-mode .login-page .secondary-btn:hover {
+    background: rgba(0, 0, 0, 0.05);
 }
 
-.login-page p {
-    text-align: center;
-    margin-top: 14px;
+/* Links - left aligned like image 2 */
+.login-page .links-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    margin-top: 16px;
+}
+
+.login-page .links-container p {
+    margin: 0;
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+.login-page .links-container a {
+    color: var(--primary);
+    font-weight: 600;
+    text-decoration: none;
+    margin-left: 4px;
+}
+
+.login-page .links-container a:hover {
+    text-decoration: underline;
+}
+
+/* Errors */
+.login-page .error {
+    color: var(--error);
+    font-size: 12px;
+    margin-top: 4px;
+    font-weight: 500;
+}
+
+.login-page .has-error input {
+    border-color: var(--error) !important;
+    background-color: rgba(var(--error-rgb), 0.08) !important;
 }

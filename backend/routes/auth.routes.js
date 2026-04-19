@@ -80,24 +80,74 @@ router.post('/register', async (req, res) => {
             res.status(500).json({ message: err.message });
         }
     });
-    
-    // ── POST /api/auth/login ──────────────────────────────────────
+
+    // ── POST /api/auth/login (STEP 1: SEND CODE) ──────────────────
     router.post('/login', async (req, res) => {
         const { email, password } = req.body;
         try {
             const user = await User.findOne({ email });
             if (!user) return res.status(400).json({ message: 'Invalid email or password' });
     
-            // Block unverified users
+            // 1. Check if they verified their email from registration
             if (!user.isVerified) {
-                return res.status(403).json({ message: 'Please check your email and verify your account before logging in.' });
+                return res.status(403).json({ message: 'Please check your email and verify your account first.' });
             }
-    
-            if (user.status === 'inactive') return res.status(403).json({ message: 'Your account is deactivated. Please contact the admin.' });
+            if (user.status === 'inactive') return res.status(403).json({ message: 'Account deactivated.' });
     
             const match = await user.matchPassword(password);
             if (!match) return res.status(400).json({ message: 'Invalid email or password' });
     
+            // 2. Generate a 6-digit code
+            const code = Math.floor(100000 + Math.random() * 900000).toString();
+    
+            // 3. Save code to user
+            user.twoFactorCode = code;
+            user.twoFactorExpire = Date.now() + 10 * 60 * 1000; // Expires in 10 minutes
+            await user.save();
+    
+            // 4. Send the email
+            const message = `Your login verification code is: ${code}\n\nThis code will expire in 10 minutes.`;
+    
+            try {
+                await sendEmail({
+                    email: user.email,
+                    subject: 'Your Login Verification Code',
+                    message,
+                });
+                // Tell the frontend we need the code!
+                res.status(200).json({ requiresTwoFactor: true, message: 'Verification code sent' });
+            } catch (err) {
+                user.twoFactorCode = undefined;
+                user.twoFactorExpire = undefined;
+                await user.save();
+                console.error("2FA EMAIL ERROR:", err);
+                return res.status(500).json({ message: 'Failed to send verification code.' });
+            }
+        } catch (err) {
+            res.status(500).json({ message: err.message });
+        }
+    });
+    
+    // ── POST /api/auth/verify-2fa (STEP 2: LOG THEM IN) ───────────
+    router.post('/verify-2fa', async (req, res) => {
+        const { email, code } = req.body;
+        try {
+            const user = await User.findOne({
+                email,
+                twoFactorCode: code,
+                twoFactorExpire: { $gt: Date.now() } // Make sure it hasn't expired
+            });
+    
+            if (!user) {
+                return res.status(400).json({ message: 'Invalid or expired verification code' });
+            }
+    
+            // Clear the code so it can't be used again
+            user.twoFactorCode = undefined;
+            user.twoFactorExpire = undefined;
+            await user.save();
+    
+            // Give them the actual login token!
             res.json({
                 token: generateToken(user._id),
                 user: { _id: user._id, name: user.name, email: user.email, role: user.role, profilePic: user.profilePic }
