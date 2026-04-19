@@ -29,11 +29,11 @@ export default function ForgotPasswordPage() {
     };
 
     return (
-        <div className="forgot-password-page">
+        <div className="contact-page">
             <Notification open={notification.open} message={notification.message} type={notification.type} onClose={closeNotification} />
             <main>
                 <Reveal direction="up">
-                    <section>
+                    <section className="auth-card">
                         <h2>Forgot Password</h2>
                         {success ? (
                             <p style={{ marginTop: 15 }}>Check your email for a link to reset your password. If it doesn't appear within a few minutes, check your spam folder.</p>

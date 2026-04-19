@@ -96,39 +96,40 @@ router.put('/change-password', protect, async (req, res) => {
 router.post('/forgot-password', async (req, res) => {
     try {
         const user = await User.findOne({ email: req.body.email });
-        if (!user) {
-            return res.status(404).json({ message: 'There is no user with that email' });
-        }
+        if (!user) return res.status(404).json({ message: 'There is no user with that email' });
 
-        // Generate a random token
         const resetToken = crypto.randomBytes(20).toString('hex');
-
-        // Hash it and set it to the user model
         user.resetPasswordToken = crypto.createHash('sha256').update(resetToken).digest('hex');
-        user.resetPasswordExpire = Date.now() + 15 * 60 * 1000; // 15 minutes
+        user.resetPasswordExpire = Date.now() + 15 * 60 * 1000; // 15 mins
 
         await user.save();
 
-        // Create reset URL (This should point to your React frontend's reset page)
-        const resetUrl = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
+        const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+        const resetUrl = `${frontendUrl}/reset-password/${resetToken}`;
 
-        const message = `You are receiving this email because you (or someone else) has requested the reset of a password. Please make a PUT request to: \n\n ${resetUrl}`;
+        const message = `You requested a password reset. Please click the link below to reset your password:\n\n${resetUrl}\n\nThis link expires in 15 minutes.`;
 
         try {
             await sendEmail({
                 email: user.email,
-                subject: 'Password Reset Token',
+                subject: 'Password Reset Request',
                 message,
             });
-
-            res.status(200).json({ message: 'Email sent' });
+            res.status(200).json({ message: 'Email sent successfully' });
         } catch (err) {
             user.resetPasswordToken = undefined;
             user.resetPasswordExpire = undefined;
             await user.save();
+
+            // 👉 ADD THIS LINE:
+            console.error("NODEMAILER ERROR:", err);
+
             return res.status(500).json({ message: 'Email could not be sent' });
         }
     } catch (err) {
+        // 👉 ADD THIS LINE:
+        console.error("FORGOT PASSWORD ROUTE ERROR:", err);
+
         res.status(500).json({ message: err.message });
     }
 });

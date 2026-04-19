@@ -1,99 +1,155 @@
-.forgot-password-page,
-.reset-password-page {
+/* =========================
+   AUTH PAGES (Login, Register, Forgot/Reset Password)
+   ========================= */
+
+/* The main card container */
+.auth-card {
     max-width: 420px;
-    margin: 70px auto;
-    background: rgba(255, 255, 255, 0.9);
+    margin: 40px auto 80px;
+    background: var(--bg);
     padding: 30px;
     border-radius: 16px;
-    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.08);
-    backdrop-filter: blur(12px);
+    border: 1px solid var(--border-soft);
+    box-shadow: 0 14px 30px var(--shadow-color);
     animation: fadeInUp 0.6s ease;
 }
 
-/* If your app uses dark mode, this keeps the card looking good on dark backgrounds */
-body:not(.light-mode) .forgot-password-page,
-body:not(.light-mode) .reset-password-page {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid var(--border-soft);
+/* Match the dark mode card background from BlogPage */
+body:not(.light-mode) .auth-card {
+    background: rgba(255, 255, 255, 0.045);
 }
 
-.forgot-password-page h2,
-.reset-password-page h2 {
+.auth-card h2 {
     text-align: center;
     margin-bottom: 20px;
     font-weight: 700;
+    color: var(--text);
 }
 
-.forgot-password-page form,
-.reset-password-page form {
+.auth-card form {
     display: flex;
     flex-direction: column;
     gap: 14px;
 }
 
-.forgot-password-page input,
-.reset-password-page input {
+/* Labels and Field Wrappers */
+.auth-card .form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.auth-card .form-field label {
+    font-size: 13px;
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+/* Inputs */
+.auth-card input {
+    width: 100%;
+    box-sizing: border-box;
     padding: 12px;
-    border: 1px solid #e5e7eb;
+    border: 1px solid var(--border-soft);
     border-radius: 12px;
     background: var(--input-bg);
     color: var(--text);
     transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-body:not(.light-mode) .forgot-password-page input,
-body:not(.light-mode) .reset-password-page input {
-    border-color: var(--border-soft);
-}
-
-.forgot-password-page input:focus,
-.reset-password-page input:focus {
-    border-color: #2563eb;
-    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+.auth-card input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(var(--primary-rgb), 0.15);
     outline: none;
 }
 
-.forgot-password-page button[type="submit"],
-.reset-password-page button[type="submit"] {
-    background: linear-gradient(135deg, #2563eb, #4f46e5);
-    color: white;
+/* Submit Button */
+.auth-card button[type="submit"],
+.auth-card button.submit-btn {
+    width: 100%;
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    color: #fff;
     padding: 12px;
     border-radius: 12px;
     border: none;
-    font-weight: 600;
+    font-size: 15px;
+    font-weight: 700;
     cursor: pointer;
     transition: transform 0.2s, box-shadow 0.2s;
     margin-top: 10px;
 }
 
-.forgot-password-page button[type="submit"]:hover:not(:disabled),
-.reset-password-page button[type="submit"]:hover:not(:disabled) {
+.auth-card button[type="submit"]:hover:not(:disabled),
+.auth-card button.submit-btn:hover:not(:disabled) {
     transform: translateY(-2px);
-    box-shadow: 0 8px 18px rgba(37, 99, 235, 0.3);
+    box-shadow: 0 8px 18px rgba(var(--primary-rgb), 0.3);
 }
 
-.forgot-password-page button[type="submit"]:disabled,
-.reset-password-page button[type="submit"]:disabled {
+.auth-card button[type="submit"]:disabled,
+.auth-card button.submit-btn:disabled {
     opacity: 0.7;
     cursor: not-allowed;
 }
 
-.forgot-password-page p,
-.reset-password-page p {
+/* Text and Links */
+.auth-card p {
     text-align: center;
     margin-top: 14px;
     font-size: 14px;
     line-height: 1.5;
+    color: var(--text-muted);
 }
 
-.forgot-password-page a,
-.reset-password-page a {
-    color: #2563eb;
+.auth-card a {
+    color: var(--primary);
     font-weight: 600;
     text-decoration: none;
+    transition: opacity 0.2s;
 }
 
-.forgot-password-page a:hover,
-.reset-password-page a:hover {
+.auth-card a:hover {
     text-decoration: underline;
+    opacity: 0.85;
+}
+
+/* =========================
+   PASSWORD SHOW/HIDE TOGGLE
+   ========================= */
+.auth-card .password-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.auth-card .password-input {
+    padding-right: 60px; /* Make room for the toggle button */
+}
+
+.auth-card .password-toggle {
+    position: absolute;
+    right: 12px;
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0;
+}
+
+.auth-card .password-toggle:hover {
+    color: var(--primary);
+}
+
+/* =========================
+   ERROR STATES
+   ========================= */
+.auth-card .has-error input {
+    border-color: rgba(var(--error-rgb, 255, 77, 77), 0.6);
+}
+
+.auth-card .error {
+    color: var(--error, #ff4d4d);
+    font-size: 12px;
+    margin-top: 2px;
 }

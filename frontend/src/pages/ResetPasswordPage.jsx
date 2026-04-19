@@ -34,11 +34,11 @@ export default function ResetPasswordPage() {
     };
 
     return (
-        <div className="reset-password-page">
+        <div className="contact-page">
             <Notification open={notification.open} message={notification.message} type={notification.type} onClose={closeNotification} />
             <main>
                 <Reveal direction="up">
-                    <section>
+                    <section className="auth-card">
                         <h2>Reset Password</h2>
                         <form onSubmit={handleSubmit}>
                             <div className="form-field">
