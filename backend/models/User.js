@@ -11,6 +11,8 @@ const userSchema = new mongoose.Schema({
             'active' },
     bio: { type: String, default: '' },
     profilePic: { type: String, default: '' }, // stores filename e.g.
+    resetPasswordToken: String,
+    resetPasswordExpire: Date,
   
 }, { timestamps: true }); // adds createdAt and updatedAt automatically
 // ── Pre-save hook: hash password before storing ────────────────

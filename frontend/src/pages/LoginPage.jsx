@@ -141,7 +141,8 @@ export default function LoginPage() {
                             </button>
 
                             <p style={{ marginTop: 12 }}>
-                                No account? <Link to="/register">Register</Link>
+                                No account? <Link to="/forgot-password">Register</Link>
+                                <Link to="/forgot-password">Forgot Password?</Link>
                             </p>
                         </form>
                     </section>

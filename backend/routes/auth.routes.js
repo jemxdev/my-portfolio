@@ -5,7 +5,8 @@ const User = require('../models/User');
 const { protect } = require('../middleware/auth.middleware');
 const upload = require('../middleware/upload');
 const router = express.Router();
-
+const crypto = require("crypto");
+const sendEmail = require("../utils/sendEmail");
 
 // Helper function — generates a JWT token that expires in 7 days
 const generateToken = (id) => jwt.sign({ id }, process.env.JWT_SECRET,
@@ -91,3 +92,71 @@ router.put('/change-password', protect, async (req, res) => {
         } catch (err) { res.status(500).json({ message: err.message }); }
     });
     module.exports = router
+// ── POST /api/auth/forgot-password ────────────────────────────
+router.post('/forgot-password', async (req, res) => {
+    try {
+        const user = await User.findOne({ email: req.body.email });
+        if (!user) {
+            return res.status(404).json({ message: 'There is no user with that email' });
+        }
+
+        // Generate a random token
+        const resetToken = crypto.randomBytes(20).toString('hex');
+
+        // Hash it and set it to the user model
+        user.resetPasswordToken = crypto.createHash('sha256').update(resetToken).digest('hex');
+        user.resetPasswordExpire = Date.now() + 15 * 60 * 1000; // 15 minutes
+
+        await user.save();
+
+        // Create reset URL (This should point to your React frontend's reset page)
+        const resetUrl = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
+
+        const message = `You are receiving this email because you (or someone else) has requested the reset of a password. Please make a PUT request to: \n\n ${resetUrl}`;
+
+        try {
+            await sendEmail({
+                email: user.email,
+                subject: 'Password Reset Token',
+                message,
+            });
+
+            res.status(200).json({ message: 'Email sent' });
+        } catch (err) {
+            user.resetPasswordToken = undefined;
+            user.resetPasswordExpire = undefined;
+            await user.save();
+            return res.status(500).json({ message: 'Email could not be sent' });
+        }
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+});
+
+// ── PUT /api/auth/reset-password/:token ───────────────────────
+router.put('/reset-password/:token', async (req, res) => {
+    try {
+        // Hash the token from the URL to compare it with the DB
+        const resetPasswordToken = crypto.createHash('sha256').update(req.params.token).digest('hex');
+
+        const user = await User.findOne({
+            resetPasswordToken,
+            resetPasswordExpire: { $gt: Date.now() }, // Check if it hasn't expired
+        });
+
+        if (!user) {
+            return res.status(400).json({ message: 'Invalid or expired token' });
+        }
+
+        // Set new password (assuming your User model has a pre-save hook that hashes passwords)
+        user.password = req.body.password;
+        user.resetPasswordToken = undefined;
+        user.resetPasswordExpire = undefined;
+
+        await user.save();
+
+        res.status(200).json({ message: 'Password reset successful' });
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+});
