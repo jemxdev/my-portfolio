@@ -48,6 +48,8 @@ export default function ProfilePage() {
             setBio(data?.bio || "");
             setPic(null);
 
+            localStorage.setItem("user", JSON.stringify(data));
+            window.dispatchEvent(new Event("auth-changed"));
             showNotification("Profile updated successfully!", "success");
         } catch (err) {
             showNotification(err?.response?.data?.message || "Failed to update profile", "error");
