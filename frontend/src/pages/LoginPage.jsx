@@ -15,7 +15,8 @@ export default function LoginPage() {
     const [errors, setErrors] = useState({});
     const [submitting, setSubmitting] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
-
+    const [submitText, setSubmitText] = useState("Login");
+    
     const handleChange = (e) => {
         const { name, value } = e.target;
         setForm((prev) => ({ ...prev, [name]: value }));
@@ -43,6 +44,11 @@ export default function LoginPage() {
 
         try {
             setSubmitting(true);
+            setSubmitText("Logging in...");
+
+            const wakeUpTimer = setTimeout(() => {
+                setSubmitText("Waking up server,This can take about 50 seconds... Hang tight! ");
+            }, 5000);
 
             const payload = {
                 email: form.email.trim().toLowerCase(),
@@ -51,6 +57,8 @@ export default function LoginPage() {
 
             const { data } = await api.post("/auth/login", payload);
 
+            clearTimeout(wakeUpTimer);
+            
             localStorage.setItem("token", data.token);
             localStorage.setItem(
                 "user",
@@ -70,6 +78,7 @@ export default function LoginPage() {
             showNotification(err?.response?.data?.message || "Login failed", "error");
         } finally {
             setSubmitting(false);
+            setSubmitText("Login");
         }
     };
 
@@ -128,7 +137,7 @@ export default function LoginPage() {
                             </div>
 
                             <button type="submit" disabled={submitting}>
-                                {submitting ? "Logging in..." : "Login"}
+                                {submitText}
                             </button>
 
                             <p style={{ marginTop: 12 }}>

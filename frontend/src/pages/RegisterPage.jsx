@@ -24,7 +24,8 @@ export default function RegisterPage() {
     const [submitting, setSubmitting] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirm, setShowConfirm] = useState(false);
-
+    const [submitText, setSubmitText] = useState("Register");
+    
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }));
@@ -55,10 +56,14 @@ export default function RegisterPage() {
     const onSubmit = async (e) => {
         e.preventDefault();
         console.log("SUBMIT CLICKED", formData);
-
+            
         if (submitting) return;
 
-        // TEMP: bypass all custom validation to confirm request works
+        if (!validateForm()) {
+            showNotification("Please fix the errors in the form", "error");
+            return;
+        }
+        
         const payload = {
             name: formData.name?.trim(),
             email: formData.email?.trim().toLowerCase(),
@@ -72,9 +77,18 @@ export default function RegisterPage() {
 
         try {
             setSubmitting(true);
+            setSubmitText("Creating account...");
+            
+            const wakeUpTimer = setTimeout(() => {
+                setSubmitText("Waking up server,This can take about 50 seconds... Hang tight! ");
+            }, 5000);
+            
             console.log("Sending register request...", payload);
 
             const { data } = await api.post("/auth/register", payload);
+
+            clearTimeout(wakeUpTimer);
+
             console.log("Register success:", data);
 
             localStorage.setItem("token", data.token);
@@ -88,6 +102,7 @@ export default function RegisterPage() {
             showNotification(err?.response?.data?.message || "Registration failed", "error");
         } finally {
             setSubmitting(false);
+            setSubmitText("Register");
         }
     };
 
@@ -164,12 +179,8 @@ export default function RegisterPage() {
                             {errors.confirmPassword && <span className="error">{errors.confirmPassword}</span>}
                         </div>
 
-                        <button
-                            type="button"
-                            disabled={submitting}
-                            onClick={onSubmit}
-                        >
-                            {submitting ? "Creating account..." : "Register"}
+                        <button type="button" disabled={submitting} onClick={onSubmit}>
+                            {submitText}
                         </button>
 
                         <p style={{ marginTop: 12 }}>
