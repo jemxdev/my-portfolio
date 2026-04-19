@@ -68,19 +68,27 @@ export default function RegisterPage() {
             password: formData.password,
         };
 
-        let wakeUpTimer;
+        let waitTimer;
+        let sleepTimer;
 
         try {
             setSubmitting(true);
             setSubmitText("Creating account...");
 
-            wakeUpTimer = setTimeout(() => {
-                setSubmitText("Waking up server... Hang tight! 🚀");
+            // Timer 1: Fires after 3 seconds
+            waitTimer = setTimeout(() => {
+                setSubmitText("Waiting for server...");
             }, 3000);
+
+            // Timer 2: Fires after 10 seconds
+            sleepTimer = setTimeout(() => {
+                setSubmitText("Waking up server, this may take around 50 seconds... Hang tight! ");
+            }, 10000);
 
             // Send the request
             const { data } = await api.post("/auth/register", payload);
-            clearTimeout(wakeUpTimer);
+            clearTimeout(waitTimer);
+            clearTimeout(sleepTimer);
 
             // REMOVED: localStorage.setItem and auth-changed event
 
@@ -90,7 +98,8 @@ export default function RegisterPage() {
             console.error("Register error:", err?.response || err);
             showNotification(err?.response?.data?.message || "Registration failed", "error");
         } finally {
-            clearTimeout(wakeUpTimer);
+            clearTimeout(waitTimer);
+            clearTimeout(sleepTimer);
             setSubmitting(false);
             setSubmitText("Register");
         }

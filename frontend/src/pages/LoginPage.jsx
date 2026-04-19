@@ -38,11 +38,22 @@ export default function LoginPage() {
         if (submitting) return;
         if (!validateStep1()) return;
 
-        let wakeUpTimer;
+        let waitTimer;
+        let sleepTimer;
+
         try {
             setSubmitting(true);
             setSubmitText("Checking credentials...");
-            wakeUpTimer = setTimeout(() => setSubmitText("Waking up server... Hang tight! 🚀"), 5000);
+
+            // Timer 1: Fires after 3 seconds
+            waitTimer = setTimeout(() => {
+                setSubmitText("Waiting for server...");
+            }, 3000);
+
+            // Timer 2: Fires after 10 seconds
+            sleepTimer = setTimeout(() => {
+                setSubmitText("Waking up server, this may take around 50 seconds... Hang tight! 🚀");
+            }, 10000);
 
             const payload = {
                 email: form.email.trim().toLowerCase(),
@@ -50,6 +61,10 @@ export default function LoginPage() {
             };
 
             const { data } = await api.post("/auth/login", payload);
+
+            // Clear BOTH timers the exact millisecond the server replies!
+            clearTimeout(waitTimer);
+            clearTimeout(sleepTimer);
 
             if (data.requiresTwoFactor) {
                 showNotification("Code sent to your email!", "success");
@@ -59,7 +74,9 @@ export default function LoginPage() {
         } catch (err) {
             showNotification(err?.response?.data?.message || "Login failed", "error");
         } finally {
-            clearTimeout(wakeUpTimer);
+            // Also clear them here just in case it crashed and jumped to the catch block
+            clearTimeout(waitTimer);
+            clearTimeout(sleepTimer);
             setSubmitting(false);
             setSubmitText("Login");
         }
