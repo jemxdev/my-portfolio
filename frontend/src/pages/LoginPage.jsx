@@ -149,6 +149,9 @@ export default function LoginPage() {
                                         <p>Forgot password? <Link to="/forgot-password">Reset it</Link></p>
                                         <p>No account? <Link to="/register">Register</Link></p>
                                     </div>
+                                    <p style={{ fontSize: "0.85rem", color: "gray", textAlign: "center", marginBottom: "15px", marginTop: "-5px" }}>
+                                        <strong>Secure Login:</strong> Passwords are safely hashed in our database.
+                                    </p>
                                 </form>
                             </>
                         ) : (

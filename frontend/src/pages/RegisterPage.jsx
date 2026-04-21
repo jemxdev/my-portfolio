@@ -174,6 +174,7 @@ export default function RegisterPage() {
                                 >
                                     {showConfirm ? "Hide" : "Show"}
                                 </button>
+
                             </div>
                             {errors.confirmPassword && <span className="error">{errors.confirmPassword}</span>}
                         </div>
@@ -182,8 +183,13 @@ export default function RegisterPage() {
                             {submitText}
                         </button>
 
-                        <p style={{ marginTop: 12 }}>
-                            Already have an account? <Link to="/login">Login</Link>
+                        <div className="links-container">
+                            <p>
+                                Already have an account? <Link to="/login">Login</Link>
+                            </p>
+                        </div>
+                        <p style={{ fontSize: "0.85rem", color: "gray", textAlign: "center", marginBottom: "15px", lineHeight: "1.4" }}>
+                            <strong>Privacy Notice:</strong> Your password is securely hashed in our database. Even our system admins cannot see your raw password.
                         </p>
                     </form>
                 </section>

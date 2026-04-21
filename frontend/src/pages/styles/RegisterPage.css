@@ -593,3 +593,14 @@ body.light-mode {
     border-color: rgba(var(--primary-rgb), 0.4) !important;
     background: rgba(var(--primary-rgb), 0.14) !important;
 }
+.register-page .links-container p {
+    margin: 0;
+    font-size: 14px;
+    color: var(--text-muted);
+}
+.register-page .links-container a {
+    color: var(--primary);
+    font-weight: 600;
+    text-decoration: none;
+    margin-left: 4px;
+}
